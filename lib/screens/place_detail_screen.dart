@@ -21,15 +21,16 @@ class DetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/images/favicon.png',
-              width: 30,
+            Flexible(
+              child: Image.asset(
+                'assets/images/favicon.png',
+                width: 30,
+              ),
             ),
             const SizedBox(
               width: 16,
             ),
-            Container(
-              width: 250,
+            Flexible(
               child: Text(
                 "Ada apa di ${place.name}?".length > 25
                     ? place.name
@@ -68,6 +69,7 @@ class DetailMobilePage extends StatefulWidget {
 class _DetailMobilePageState extends State<DetailMobilePage> {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     var scrollController = ScrollController();
     const informationTextStyle = TextStyle(fontFamily: 'Oxygen');
     return SingleChildScrollView(
@@ -88,34 +90,40 @@ class _DetailMobilePageState extends State<DetailMobilePage> {
           ]),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 16),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(children: [
-                    const Icon(Icons.calendar_today),
-                    const SizedBox(height: 8),
-                    Text(
-                      widget.place.openDays,
-                      style: informationTextStyle,
-                    ),
-                  ]),
-                  Column(children: [
-                    const Icon(Icons.access_time),
-                    const SizedBox(height: 8),
-                    Text(
-                      widget.place.openTime,
-                      style: informationTextStyle,
-                    ),
-                  ]),
-                  Column(children: [
-                    const Icon(Icons.monetization_on_outlined),
-                    const SizedBox(height: 8),
-                    Text(
-                      widget.place.ticketPrice,
-                      style: informationTextStyle,
-                    ),
-                  ]),
-                ]),
+            child: screenWidth < 325
+                ? const Center(
+                    child: Text(
+                    "To Tight!",
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ))
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                        Column(children: [
+                          const Icon(Icons.calendar_today),
+                          const SizedBox(height: 8),
+                          Text(
+                            widget.place.openDays,
+                            style: informationTextStyle,
+                          ),
+                        ]),
+                        Column(children: [
+                          const Icon(Icons.access_time),
+                          const SizedBox(height: 8),
+                          Text(
+                            widget.place.openTime,
+                            style: informationTextStyle,
+                          ),
+                        ]),
+                        Column(children: [
+                          const Icon(Icons.monetization_on_outlined),
+                          const SizedBox(height: 8),
+                          Text(
+                            widget.place.ticketPrice,
+                            style: informationTextStyle,
+                          ),
+                        ]),
+                      ]),
           ),
           Container(
             padding: const EdgeInsets.all(16.0),
@@ -192,8 +200,9 @@ class _DetailMobileWebState extends State<DetailMobileWeb> {
   @override
   Widget build(BuildContext context) {
     const informationTextStyle = TextStyle(fontFamily: 'Oxygen');
-    return Scaffold(
-      body: Padding(
+    final screenWidth = MediaQuery.of(context).size.width;
+    return SingleChildScrollView(
+      child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 64),
         child: Center(
           child: SizedBox(

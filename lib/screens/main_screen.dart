@@ -28,34 +28,27 @@ class Mainscreen extends StatelessWidget {
               const SizedBox(
                 width: 16,
               ),
-              const Text(
-                "TravelIn",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Staatliches'),
+              const Expanded(
+                child: Center(
+                  child: Text(
+                    "TravelIn",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Staatliches'),
+                  ),
+                ),
               )
             ],
           ),
         ),
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            if (constraints.maxWidth <= 600) {
-              return const GridViewMenu();
-            } else if (constraints.maxWidth <= 1200) {
-              return const GridViewMenu(gridCount: 3);
-            } else {
-              return const GridViewMenu(gridCount: 6);
-            }
-          },
-        ));
+        body: const GridViewMenu());
   }
 }
 
 class GridViewMenu extends StatefulWidget {
-  const GridViewMenu({super.key, this.gridCount = 2});
-  final int gridCount;
+  const GridViewMenu({super.key});
   @override
   State<GridViewMenu> createState() => _GridViewMenu();
 }
@@ -90,12 +83,20 @@ class _GridViewMenu extends State<GridViewMenu> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    int gridCount = 1;
+    bool isShowPaginationAndControl = false;
     var currentColorScheme = Theme.of(context).colorScheme;
+    screenWidth < 400
+        ? isShowPaginationAndControl = false
+        : isShowPaginationAndControl = true;
+    gridCount = (screenWidth / 230).round();
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Column(
+        mainAxisSize: MainAxisSize.max,
         children: [
-          Expanded(
+          Flexible(
               flex: 1,
               child: Swiper(
                 itemBuilder: (context, index) {
@@ -106,25 +107,33 @@ class _GridViewMenu extends State<GridViewMenu> {
                   );
                 },
                 itemCount: bannerData.length,
-                pagination:
-                    const SwiperPagination(alignment: Alignment.bottomCenter),
-                control: const SwiperControl(color: Colors.white70),
+                pagination: isShowPaginationAndControl
+                    ? const SwiperPagination(alignment: Alignment.bottomCenter)
+                    : null,
+                control: isShowPaginationAndControl
+                    ? const SwiperControl(color: Colors.white70)
+                    : null,
               )),
-          const SizedBox(height: 20),
-          const Text(
-            "Mau jalan kemana hari ini?",
-            style: TextStyle(
-              fontSize: 16,
-              fontFamily: "Oxygen",
-              fontWeight: FontWeight.bold,
+          // const SizedBox(height: 20),
+          const Flexible(
+            child: Padding(
+              padding: EdgeInsets.only(top: 20, bottom: 20),
+              child: Text(
+                "Mau jalan kemana hari ini?",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: "Oxygen",
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
-          const SizedBox(height: 20),
-          Expanded(
+          // const SizedBox(height: 20),
+          Flexible(
             child: GridView.count(
                 controller: ScrollController(),
                 scrollDirection: Axis.vertical,
-                crossAxisCount: widget.gridCount,
+                crossAxisCount: gridCount,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
                 shrinkWrap: true,
@@ -171,10 +180,9 @@ class _GridViewMenu extends State<GridViewMenu> {
                           color: currentColorScheme.secondaryContainer,
                           child: Column(
                             children: [
-                              Expanded(
+                              Flexible(
                                   flex: 1,
                                   child: Swiper(
-                                    containerWidth: 151,
                                     onTap: (index) {
                                       navigateTo(locationName);
                                     },
@@ -190,10 +198,14 @@ class _GridViewMenu extends State<GridViewMenu> {
                                           dataUsed[value].name, locationName);
                                     },
                                     itemCount: dataUsed!.length,
-                                    pagination: const SwiperPagination(
-                                        alignment: Alignment.bottomCenter),
-                                    control: const SwiperControl(
-                                        color: Colors.white70),
+                                    pagination: isShowPaginationAndControl
+                                        ? const SwiperPagination(
+                                            alignment: Alignment.bottomCenter)
+                                        : null,
+                                    control: isShowPaginationAndControl
+                                        ? const SwiperControl(
+                                            color: Colors.white70)
+                                        : null,
                                   )),
                             ],
                           ),

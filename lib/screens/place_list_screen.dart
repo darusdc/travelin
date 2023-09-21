@@ -22,20 +22,26 @@ class PlacelistScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                'assets/images/favicon.png',
-                width: 30,
+              Flexible(
+                child: Image.asset(
+                  'assets/images/favicon.png',
+                  width: 30,
+                ),
               ),
               const SizedBox(
                 width: 16,
               ),
-              Text(
-                "TravelIn ke $city",
-                style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Staatliches'),
+              Flexible(
+                child: Center(
+                  child: Text(
+                    "TravelIn ke $city",
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Staatliches'),
+                  ),
+                ),
               )
             ],
           ),
@@ -84,6 +90,7 @@ class _TouristPlaceListState extends State<TouristPlaceList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: true,
       itemBuilder: (context, index) {
         final TourismPlace place = widget.cityData[index];
         return InkWell(
@@ -114,14 +121,10 @@ class _TouristPlaceListState extends State<TouristPlaceList> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const SizedBox(
-                          height: 6,
-                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Container(
-                              width: 120,
+                            Expanded(
                               child: Text(
                                 place.name,
                                 style: const TextStyle(
@@ -129,12 +132,14 @@ class _TouristPlaceListState extends State<TouristPlaceList> {
                                     fontFamily: "Oxygen"),
                               ),
                             ),
-                            IconButton(
-                                onPressed: () => favoriteClick(place),
-                                icon: place.isFavorite
-                                    ? const Icon(Icons.favorite,
-                                        color: Colors.red)
-                                    : const Icon(Icons.favorite_border))
+                            Expanded(
+                              child: IconButton(
+                                  onPressed: () => favoriteClick(place),
+                                  icon: place.isFavorite
+                                      ? const Icon(Icons.favorite,
+                                          color: Colors.red)
+                                      : const Icon(Icons.favorite_border)),
+                            )
                           ],
                         ),
                         Text(
@@ -233,15 +238,17 @@ class _TouristPlaceGridState extends State<TouristPlaceGrid> {
                                       color: Colors.red,
                                     )
                                   : const Icon(Icons.favorite_border)),
-                          Text(
-                            e.location,
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryContainer,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Oxygen"),
+                          Flexible(
+                            child: Text(
+                              e.location,
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Oxygen"),
+                            ),
                           ),
                         ],
                       ),
