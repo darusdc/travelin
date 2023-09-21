@@ -200,7 +200,6 @@ class _DetailMobileWebState extends State<DetailMobileWeb> {
   @override
   Widget build(BuildContext context) {
     const informationTextStyle = TextStyle(fontFamily: 'Oxygen');
-    final screenWidth = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 64),
